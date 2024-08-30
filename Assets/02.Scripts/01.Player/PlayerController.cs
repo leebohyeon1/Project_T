@@ -33,7 +33,7 @@ public float moveSpeed = 5f;
 
     void Update()
     {
-        Rotate();
+       // Rotate();
         Jump();
     }
 

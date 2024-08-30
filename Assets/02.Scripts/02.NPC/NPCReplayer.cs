@@ -7,34 +7,51 @@ public class NPCReplayer : MonoBehaviour
     private List<PlayerActionRecorder.PlayerAction> recordedActions;
     private int currentActionIndex = 0;
     private bool isReplaying = false;
+    private float replayStartTime;
 
+    void FixedUpdate()
+    {
+        if (isReplaying)
+        {
+            ReplayAction();
+        }
+    }
+
+    // 리플레이를 시작하는 메서드
     public void StartReplay(List<PlayerActionRecorder.PlayerAction> actions)
     {
+        if (actions == null || actions.Count == 0) return;
+
         recordedActions = actions;
         currentActionIndex = 0;
         isReplaying = true;
-        StartCoroutine(ReplayCoroutine());
+        replayStartTime = Time.time;
     }
 
-    private IEnumerator ReplayCoroutine()
+    // 행동을 재생하는 메서드
+    private void ReplayAction()
     {
-        while (isReplaying && currentActionIndex < recordedActions.Count)
+        if (currentActionIndex >= recordedActions.Count)
         {
-            var action = recordedActions[currentActionIndex];
+            isReplaying = false;
+            Destroy(gameObject);
+            return;
+        }
+
+        // 현재 행동 가져오기
+        var action = recordedActions[currentActionIndex];
+
+        // 현재 시간과 재생 시작 시간의 차이 계산
+        float elapsedTime = Time.time - replayStartTime;
+
+        // 만약 현재 행동의 타임스탬프가 경과된 시간보다 작거나 같으면 행동 재생
+        if (action.TimeStamp <= elapsedTime)
+        {
             transform.position = action.Position;
             transform.rotation = action.Rotation;
 
-            // 애니메이션 재생 (필요시 애니메이터 설정)
-            // Example: animator.Play(action.AnimationState);
-
-            if (currentActionIndex < recordedActions.Count - 1)
-            {
-                float waitTime = recordedActions[currentActionIndex + 1].TimeStamp - action.TimeStamp;
-                yield return new WaitForSeconds(waitTime);
-            }
+            // 다음 행동으로 이동
             currentActionIndex++;
         }
-
-        Destroy(gameObject); // 모든 행동이 끝나면 NPC 오브젝트 제거
     }
 }
