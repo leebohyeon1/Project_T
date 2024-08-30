@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public NPCReplayer npcReplayerPrefab; // NPCReplayer 프리팹 참조
     public Transform player; // 플레이어 Transform
     private int playerLives = 3; // 플레이어의 목숨 수
+
     private List<List<PlayerActionRecorder.PlayerAction>> allRecordedActions = new List<List<PlayerActionRecorder.PlayerAction>>();
     private List<GameObject> actionClones = new List<GameObject>();
 

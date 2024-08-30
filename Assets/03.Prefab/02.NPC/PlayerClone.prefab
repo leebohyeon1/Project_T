@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4944724858726924856}
   - component: {fileID: 3640367188870177846}
   m_Layer: 7
-  m_Name: NPC
+  m_Name: PlayerClone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
