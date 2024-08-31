@@ -4,14 +4,10 @@ using Sirenix.OdinInspector; // Odin Inspector 네임스페이스 추가
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
-    [BoxGroup("Movement Settings"), LabelText("이동 속도 설정")] // Odin Inspector로 그룹화
+    [BoxGroup("Movement Settings"), LabelText("이동 속도 설정")]
     public float moveSpeed = 5f;
 
-    [BoxGroup("Movement Settings"), LabelText("회전 속도 설정")]
-    public float rotationSpeed = 700f;
-
     [BoxGroup("Jump Settings"), LabelText("점프 힘 설정")]
-
     public float jumpForce = 5f;
 
     [BoxGroup("Jump Settings"), LabelText("땅 체크를 위한 레이어 마스크")]
@@ -19,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private bool isGrounded;
+    private bool isJumping; // 점프 상태 추적
+    private bool isTouchingWall; // 벽 접촉 상태 추적
     private Transform cameraTransform;
 
     void Start()
@@ -40,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         // 이동 속도 설정
         Vector3 moveVelocity = moveDirection * moveSpeed;
         rb.velocity = new Vector3(moveVelocity.x, rb.velocity.y, moveVelocity.z);
+  
     }
 
     public void Jump(bool jumpInput)
