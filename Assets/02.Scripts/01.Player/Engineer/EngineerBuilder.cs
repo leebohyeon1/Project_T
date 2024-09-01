@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class PlayerBuilder : MonoBehaviour
+public class EngineerBuilder : MonoBehaviour
 {
-    private PlayerActionRecorder actionRecorder;
+    private EngineerActionRecorder actionRecorder;
 
     [BoxGroup("Object Building Settings"), LabelText("설치할 오브젝트")]
     public GameObject objectPrefab; // 설치할 오브젝트 프리팹
@@ -24,9 +25,13 @@ public class PlayerBuilder : MonoBehaviour
 
     private Transform cameraTransform; // 카메라 Transform
 
+
+    private List<GameObject> objectClones_ = new List<GameObject>();
+    public List<GameObject> objectClones => objectClones_;
+
     private void Start()
     {
-        actionRecorder = GetComponent<PlayerActionRecorder>();
+        actionRecorder = GetComponent<EngineerActionRecorder>();
         cameraTransform = Camera.main.transform; // 메인 카메라의 Transform 가져오기
     }
 
@@ -75,7 +80,9 @@ public class PlayerBuilder : MonoBehaviour
         {
             objectPreview.GetComponent<Turret>().enabled = false;
         }
-        
+
+        objectPreview.GetComponent<NavMeshObstacle>().enabled = false;
+
         SetObjectPreviewMaterialAlpha(0.5f); // 반투명하게 설정
     }
 
@@ -139,7 +146,7 @@ public class PlayerBuilder : MonoBehaviour
 
             // 오브젝트를 생성하고 리스트에 추가
             GameObject placedObject = Instantiate(objectPrefab, buildPosition, buildRotation);
-            GameManager.Instance.objectClones.Add(placedObject);
+            objectClones.Add(placedObject);
 
             // 설치 행동을 기록
             actionRecorder.RecordPlaceObject(objectPrefab, buildPosition, buildRotation); // 녹화
@@ -220,5 +227,10 @@ public class PlayerBuilder : MonoBehaviour
             Destroy(obj); // 오브젝트 제거
         }
         placedObjects.Clear(); // 리스트 초기화
+    }
+
+    public List<GameObject> GetObjectClones()
+    {
+        return objectClones;
     }
 }

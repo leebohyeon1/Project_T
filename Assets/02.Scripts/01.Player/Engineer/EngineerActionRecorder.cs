@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerActionRecorder : MonoBehaviour
+public class EngineerActionRecorder : MonoBehaviour
 {
     public enum ActionType
     {

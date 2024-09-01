@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6597781481028370605}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,9 +40,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2419280792109465335}
-  - component: {fileID: 4706827536329120083}
   - component: {fileID: 142793764089603106}
-  m_Layer: 0
+  - component: {fileID: 3886236987020886533}
+  - component: {fileID: 4706827536329120083}
+  - component: {fileID: 4300389065547440458}
+  m_Layer: 10
   m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,31 +68,6 @@ Transform:
   - {fileID: 5582171592843322930}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4706827536329120083
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2385819570864219624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2188a85ab4145c445b968663270a435c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionRange: 20
-  rotationSpeed: 5
-  fireRate: 1
-  bulletPrefab: {fileID: 9035192624901173363, guid: d4d8900522c1eb24ba20758e377b7547,
-    type: 3}
-  firePoint: {fileID: 6597781481028370605}
-  turretHead: {fileID: 5582171592843322930}
-  minPitchAngle: -40
-  maxPitchAngle: 35
-  bulletSpeed: 20
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!65 &142793764089603106
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -112,6 +89,60 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 3, z: 3}
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!208 &3886236987020886533
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2385819570864219624}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.5, y: 1.5, z: 1.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1.5, z: 0}
+  m_TimeToStationary: 0.5
+--- !u!114 &4706827536329120083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2385819570864219624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2188a85ab4145c445b968663270a435c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRange: 20
+  rotationSpeed: 5
+  fireRate: 1
+  bulletPrefab: {fileID: 9035192624901173363, guid: d4d8900522c1eb24ba20758e377b7547,
+    type: 3}
+  firePoint: {fileID: 6597781481028370605}
+  turretHead: {fileID: 5582171592843322930}
+  minPitchAngle: -40
+  maxPitchAngle: 35
+  bulletSpeed: 25
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256
+--- !u!114 &4300389065547440458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2385819570864219624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 417f7f086693f1e4ca241c30c39e1eae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
 --- !u!1 &6944140494697233287
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +154,7 @@ GameObject:
   - component: {fileID: 5891727061333619681}
   - component: {fileID: 8666550715409731641}
   - component: {fileID: 2206037075515610241}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +237,7 @@ GameObject:
   - component: {fileID: 4213810925309345246}
   - component: {fileID: 1135891692570930028}
   - component: {fileID: 1020037721478954288}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +320,7 @@ GameObject:
   - component: {fileID: 244220164902631235}
   - component: {fileID: 4345681972133899554}
   - component: {fileID: 3532590255978830163}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,7 +403,7 @@ GameObject:
   - component: {fileID: 5582171592843322930}
   - component: {fileID: 4596526332669951138}
   - component: {fileID: 7555624643788603850}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}

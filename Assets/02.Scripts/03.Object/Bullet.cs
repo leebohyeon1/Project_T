@@ -1,12 +1,14 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour
 {
-    [Tooltip("총알의 속도")]
+    [BoxGroup("Setting"), LabelText("총알 데미지")]
+    public int damage = 5;
+    [BoxGroup("Setting"), LabelText("총알 속도")]
     public float speed = 20f;  // 총알의 기본 속도
-
-    [Tooltip("총알의 수명 (초)")]
+    [BoxGroup("Setting"), LabelText("총알 수명(초)")]
     public float lifetime = 5f; // 총알이 사라지기 전까지의 시간
 
     private Rigidbody rb;       // Rigidbody 컴포넌트 참조
@@ -29,14 +31,17 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    // 적과 충돌 시 처리
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy")) // 적 태그로 설정된 오브젝트에만 반응
         {
             // 적에게 피해를 주거나 다른 효과를 추가할 수 있음
-            Destroy(other.gameObject); // 예시로 적을 파괴
-            Destroy(gameObject); // 총알도 파괴
+           EnemyBase enemyBase = other.GetComponent<EnemyBase>();
+            if (enemyBase != null)
+            {
+                enemyBase.TakeDamage(damage);
+                Destroy(gameObject); // 총알 파괴
+            }
         }
     }
 }

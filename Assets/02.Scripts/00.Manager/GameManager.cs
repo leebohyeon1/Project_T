@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [FoldoutGroup("PlayerSetting")]
-    public PlayerActionRecorder playerActionRecorder; // PlayerActionRecorder 스크립트 참조
+
     [FoldoutGroup("PlayerSetting")]
     public Transform player; // 플레이어 Transform
     [FoldoutGroup("PlayerSetting"), SerializeField, LabelText("플레이어 목숨 수")]
@@ -17,21 +17,15 @@ public class GameManager : MonoBehaviour
     [FoldoutGroup("PlayerSetting"), LabelText("플레이어 스폰 장소"), Space(5f)]
     public Transform spawnLocation; // 플레이어 스폰 장소
 
-    [FoldoutGroup("CloneSetting"), LabelText("클론 프리팹")]
-    public NPCReplayer npcReplayerPrefab; // NPCReplayer 프리팹 참조
-
-    private List<List<PlayerActionRecorder.PlayerAction>> allRecordedActions = new List<List<PlayerActionRecorder.PlayerAction>>();
-    private List<GameObject> actionClones = new List<GameObject>();
-
-    private List<GameObject> objectClones_ = new List<GameObject>();
-    public List<GameObject> objectClones => objectClones_;
+    private List<GameObject> enemyList_ = new List<GameObject>();
+    public List<GameObject> enemyList => enemyList_;
 
     private void Awake()
     {
         if(Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+           // DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -41,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         StartNewLife();
     }
 
@@ -56,14 +51,17 @@ public class GameManager : MonoBehaviour
     private void StartNewLife()
     {
         ResetPlayerState();
-        playerActionRecorder.ResetRecording();
-        playerActionRecorder.StartRecording();
+        player.GetComponent<Player>().ResetPlayer();
     }
 
     private void ResetPlayerState()
     {
+        player.GetComponent<CharacterController>().enabled = false;
         // 플레이어 상태 및 위치 초기화
         player.position = spawnLocation.position;
+
+        player.GetComponent<CharacterController>().enabled = true;
+        player.GetComponent<CharacterController>().Move(Vector3.zero);
         // 여기에 플레이어의 체력, 점수 등의 초기화 코드를 추가할 수 있습니다.
     }
 
@@ -71,9 +69,7 @@ public class GameManager : MonoBehaviour
     {
         playerLives--;
 
-        // 플레이어의 행동을 저장
-        allRecordedActions.Add(playerActionRecorder.GetRecordedActions());
-        playerActionRecorder.StopRecording();
+        player.GetComponent<Player>().Die();
 
         if (playerLives > 0)
         {
@@ -88,43 +84,24 @@ public class GameManager : MonoBehaviour
 
     private void RestartGame()
     {
-        DestroyClones();
+        ResetLevel();
 
-        StartNewLife();
-
-        foreach (var recordedActions in allRecordedActions)
-        {
-            CreateNPC(recordedActions);
-        }
-
+        StartNewLife();    
     }
 
-    private void CreateNPC(List<PlayerActionRecorder.PlayerAction> actions)
-    {
-        NPCReplayer npcInstance = Instantiate(npcReplayerPrefab, player.position, Quaternion.identity);
-        actionClones.Add(npcInstance.gameObject);
-        npcInstance.StartReplay(actions);
-    }
+ 
 
-    private void DestroyClones()
+    private void ResetLevel()
     {
-        foreach (GameObject clone in actionClones)
+
+        foreach(GameObject enemy in enemyList) //적 제거
         {
-            if (clone != null)
+            if(enemy != null)
             {
-                Destroy(clone);
+                Destroy(enemy);
             }
         }
-        actionClones.Clear();
-
-        foreach (GameObject clone in objectClones)
-        {
-            if(clone != null)
-            {
-                Destroy(clone);
-            }
-        }
-        objectClones.Clear();
+        enemyList.Clear();
         
     }
 }

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static PlayerActionRecorder;
+using static EngineerActionRecorder;
 
-public class NPCReplayer : MonoBehaviour
+public class CloneReplayer : MonoBehaviour
 {
+    private EngineerBuilder Engineer;
+
     private List<PlayerAction> recordedActions;
     private int currentActionIndex = 0;
     private bool isReplaying = false;
@@ -58,7 +60,7 @@ public class NPCReplayer : MonoBehaviour
                     GameObject placedObject = Instantiate(action.Prefab, action.Position, action.Rotation);
                     placedObject.GetComponent<Collider>().isTrigger = true;
                     changebjectPreviewColor(placedObject);
-                    GameManager.Instance.objectClones.Add(placedObject);
+                    Engineer.objectClones.Add(placedObject);
                     break;
             }
             // 다음 행동으로 이동
@@ -75,5 +77,10 @@ public class NPCReplayer : MonoBehaviour
         {
             renderer.materials = transform.GetComponent<Renderer>().materials; // 메테리얼 교체
         }
+    }
+
+    public void SetEngineer(EngineerBuilder builder)
+    {
+        Engineer = builder;
     }
 }

@@ -22,6 +22,8 @@ public class Turret : MonoBehaviour
     [BoxGroup("Pitch Constraints")]
     public float maxPitchAngle = 30f;   // 터렛의 최대 피치 각도
 
+    [BoxGroup("Bullet Settings"), LabelText("총알 데미지")]
+    public int bulletDamage = 5;
     [BoxGroup("Bullet Settings"), LabelText("총알 속도")]
     public float bulletSpeed = 20f;     // 총알 속도
 
@@ -107,7 +109,9 @@ public class Turret : MonoBehaviour
 
             if (bulletScript != null)
             {
-                bulletScript.speed = bulletSpeed;  // 총알의 속도를 터렛에서 설정한 값으로 변경
+                // 총알의 값을 터렛에서 설정한 값으로 변경
+                bulletScript.damage = bulletDamage; 
+                bulletScript.speed = bulletSpeed;  
             }
         }
     }

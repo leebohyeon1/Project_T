@@ -12,7 +12,18 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        if(virtualCamera == null)
+        {
+            virtualCamera = GetComponent<CinemachineVirtualCamera>();
+         
+        }
+        playerBody = GameObject.FindGameObjectWithTag("Player").transform;
+
+        virtualCamera.LookAt = playerBody;
+        virtualCamera.Follow = playerBody;
+
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
+
         transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
     }
 
