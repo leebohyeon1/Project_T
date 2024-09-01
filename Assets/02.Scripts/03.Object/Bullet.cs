@@ -40,8 +40,8 @@ public class Bullet : MonoBehaviour
             if (enemyBase != null)
             {
                 enemyBase.TakeDamage(damage);
-                Destroy(gameObject); // ÃÑ¾Ë ÆÄ±«
             }
         }
+        Destroy(gameObject); // ÃÑ¾Ë ÆÄ±«
     }
 }

@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [FoldoutGroup("PlayerSetting")]
-
-    [FoldoutGroup("PlayerSetting")]
     public Transform player; // 플레이어 Transform
     [FoldoutGroup("PlayerSetting"), SerializeField, LabelText("플레이어 목숨 수")]
     private int playerLives = 3; // 플레이어의 목숨 수
