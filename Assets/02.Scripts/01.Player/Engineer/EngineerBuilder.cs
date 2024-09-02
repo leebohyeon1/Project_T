@@ -14,7 +14,7 @@ public class EngineerBuilder : MonoBehaviour
     [BoxGroup("Object Building Settings"), LabelText("설치 가능한 표면 레이어")]
     public LayerMask buildableSurfaceLayer; // 설치 가능한 표면 레이어
     [BoxGroup("Object Building Settings"), LabelText("설치 최대 거리")]
-    public float maxBuildDistance = 5f; // 플레이어가 설치할 수 있는 최대 거리
+    public float maxBuildDistance = 25; // 플레이어가 설치할 수 있는 최대 거리
 
     private GameObject objectPreview; // 오브젝트 설치 미리보기
     private bool isBuilding = false; // 건설 모드 활성화 여부

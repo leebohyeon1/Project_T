@@ -6,11 +6,19 @@ using static EngineerActionRecorder;
 public class CloneReplayer : MonoBehaviour
 {
     private EngineerBuilder Engineer;
+    private Animator animator;
 
     private List<PlayerAction> recordedActions;
     private int currentActionIndex = 0;
     private bool isReplaying = false;
     private float replayStartTime;
+
+    public Material[] cloneMaterials;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     void FixedUpdate()
     {
@@ -50,21 +58,54 @@ public class CloneReplayer : MonoBehaviour
         // 만약 현재 행동의 타임스탬프가 경과된 시간보다 작거나 같으면 행동 재생
         if (action.TimeStamp <= elapsedTime)
         {
+            ApplyAnimatorParameters(action.AnimatorParameters);
+
             switch (action.Type)
             {
                 case ActionType.Move:
                     transform.position = action.Position;
                     transform.rotation = action.Rotation;
                     break;
+                case ActionType.Jump:
+                    transform.position = action.Position;
+                    transform.rotation = action.Rotation;
+                    animator.SetTrigger("Jump");
+                    break;
                 case ActionType.PlaceObject:
                     GameObject placedObject = Instantiate(action.Prefab, action.Position, action.Rotation);
-                    placedObject.GetComponent<Collider>().isTrigger = true;
-                    changebjectPreviewColor(placedObject);
+                    placedObject.GetComponent<Collider>().isTrigger = true; // 클론이 소환한 오브젝트는 트리거 
+                    changebjectPreviewColor(placedObject);  
                     Engineer.objectClones.Add(placedObject);
+                    animator.SetTrigger("Place");
                     break;
+
+               
             }
+
             // 다음 행동으로 이동
             currentActionIndex++;
+        }
+    }
+
+    private void ApplyAnimatorParameters(Dictionary<string, EngineerActionRecorder.AnimatorParameter> animatorParameters)
+    {
+        foreach (var parameter in animatorParameters)
+        {
+            switch (parameter.Value.type)
+            {
+                case AnimatorControllerParameterType.Float:
+                    animator.SetFloat(parameter.Key, (float)parameter.Value.value);
+                    break;
+                case AnimatorControllerParameterType.Int:
+                    animator.SetInteger(parameter.Key, (int)parameter.Value.value);
+                    break;
+                case AnimatorControllerParameterType.Bool:
+                    animator.SetBool(parameter.Key, (bool)parameter.Value.value);
+                    break;
+                case AnimatorControllerParameterType.Trigger:
+                    // Trigger 상태는 직접 저장하지 않지만, 재생 시 필요한 경우에만 사용
+                    break;
+            }
         }
     }
 
@@ -75,7 +116,7 @@ public class CloneReplayer : MonoBehaviour
 
         foreach (Renderer renderer in objectRenderers)
         {
-            renderer.materials = transform.GetComponent<Renderer>().materials; // 메테리얼 교체
+            renderer.materials = cloneMaterials; // 메테리얼 교체
         }
     }
 
@@ -83,4 +124,6 @@ public class CloneReplayer : MonoBehaviour
     {
         Engineer = builder;
     }
+
+  
 }
