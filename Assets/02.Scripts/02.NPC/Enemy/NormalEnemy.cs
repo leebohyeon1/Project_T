@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static NormalEnemy;
 
 public class NormalEnemy : EnemyBase
 {
@@ -14,7 +13,8 @@ public class NormalEnemy : EnemyBase
             case EnemyState.Trace:
                 base.Update();
                 agent.isStopped = false;
-                
+                animator.SetBool("Trace", true);
+
                 // 에이전트의 경로가 정확하지 않거나 없는 경우
                 if (agent.pathStatus == NavMeshPathStatus.PathPartial ||
                     agent.pathStatus == NavMeshPathStatus.PathInvalid)
@@ -43,6 +43,8 @@ public class NormalEnemy : EnemyBase
 
             case EnemyState.Attack:
                 agent.isStopped = true;
+                animator.SetBool("Trace", false);
+
                 Attack();
                 break;
         }
@@ -90,13 +92,14 @@ public class NormalEnemy : EnemyBase
             attackCooldown = 2f / attackSpeed;
 
             target.GetComponent<DestructibleObject>().TakeDamage(attackDamage);
+
+            animator.SetTrigger("Attack");
         }
     }
 
     public override void TakeDamage(int damage, Player player = null)
     {
         //플레이어에게 공격당하면 재탐색 로직 추가 예정
-
         base.TakeDamage(damage);
     }
 
@@ -105,6 +108,19 @@ public class NormalEnemy : EnemyBase
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange); // 공격 범위
+    }
+
+    public override void Die()
+    {     
+        base.Die();
+    }
+
+    public override void StopEnemy()
+    {
+        base.StopEnemy();
+
+        GetComponent<Collider>().enabled = false;
+        agent.isStopped = true;
     }
 }
 
