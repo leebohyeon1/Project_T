@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7350609160287172600}
   - component: {fileID: 444809175776905968}
   - component: {fileID: 4725563172050003095}
-  - component: {fileID: 2229850742048789038}
+  - component: {fileID: -8080720300333799342}
   m_Layer: 11
   m_Name: EnergyGenerator
   m_TagString: Target
@@ -106,7 +106,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2229850742048789038
+--- !u!114 &-8080720300333799342
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2536120245490908226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 417f7f086693f1e4ca241c30c39e1eae, type: 3}
+  m_Script: {fileID: 11500000, guid: a02e066a29d12c843ab37f9a439b6631, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 100

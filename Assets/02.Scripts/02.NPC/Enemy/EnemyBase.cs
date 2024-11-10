@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class EnemyBase : MonoBehaviour
 {
     protected NavMeshAgent agent;  // NavMeshAgent를 사용해 경로를 계산하고 이동
+    protected Animator animator;
 
     public enum EnemyState
     {
@@ -39,6 +40,7 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
 
@@ -94,7 +96,25 @@ public class EnemyBase : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            Destroy(gameObject); // 장애물 파괴
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
+                return;
+            animator.SetTrigger("Die"); // 죽는 애니메이션 실행
         }
+        else
+        {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("GetHit"))
+                return;
+            animator.SetTrigger("GetHit");
+        }
+    }
+
+    public virtual void Die() // 애니메이션 이벤트
+    {
+        Destroy(gameObject);
+    }
+
+    public virtual void StopEnemy()
+    {
+
     }
 }
